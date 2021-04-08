@@ -10,6 +10,8 @@ from models import get_pred_class_idx
 def setup_folder_structure():
     if not os.path.isdir(IG_FOLDER):
         os.mkdir(IG_FOLDER)
+    if not os.path.isdir(LIME_FOLDER):
+        os.mkdir(LIME_FOLDER)
 
 def file_is_image(img_name):
     return img_name.split('.')[-1]=='jpeg' or img_name.split('.')[-1]=='jpg'

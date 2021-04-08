@@ -9,3 +9,4 @@ cmap = 'hot'
 # Constants
 IMG_FOLDER = os.path.join('.', 'imgs')
 IG_FOLDER = os.path.join(IMG_FOLDER, 'ig')
+LIME_FOLDER = os.path.join(IMG_FOLDER, 'lime')
