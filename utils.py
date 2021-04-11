@@ -12,6 +12,8 @@ def setup_folder_structure():
         os.mkdir(IG_FOLDER)
     if not os.path.isdir(LIME_FOLDER):
         os.mkdir(LIME_FOLDER)
+    if not os.path.isdir(ANCHOR_FOLDER):
+        os.mkdir(ANCHOR_FOLDER)
 
 def file_is_image(img_name):
     return img_name.split('.')[-1]=='jpeg' or img_name.split('.')[-1]=='jpg'
