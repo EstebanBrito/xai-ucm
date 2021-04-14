@@ -1,9 +1,12 @@
 import os
+from tensorflow import zeros
+
 import models
 import utils
-from settings import baseline, IG_FOLDER, cmap
+from settings import IG_FOLDER, cmap
 from ig import integrated_gradients
 
+baseline = zeros(shape=(224,224,3))
 print('-----SETUP-----')
 # Setup
 utils.setup_folder_structure()
