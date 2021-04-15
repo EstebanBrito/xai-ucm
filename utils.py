@@ -15,6 +15,9 @@ def setup_folder_structure():
     if not os.path.isdir(ANCHOR_FOLDER):
         os.mkdir(ANCHOR_FOLDER)
 
+def get_name_without_ext(filename):
+    return '.'.join(filename.split('.')[:-1])
+
 def file_is_image(img_name):
     return img_name.split('.')[-1]=='jpeg' or img_name.split('.')[-1]=='jpg'
 

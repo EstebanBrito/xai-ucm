@@ -143,5 +143,7 @@ imgs/ig
 imgs/lime
 imgs/xrai
 imgs/anchor
-
+imgs/*.jpg
+imgs/*.jpeg
+imgs/*.png
 labels.txt

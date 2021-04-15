@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing import image
 from alibi.explainers import AnchorImage
 
 from settings import IMG_FOLDER, ANCHOR_FOLDER
-from utils import saveImageFile, file_is_image, load_img_paths, setup_folder_structure
+from utils import saveImageFile, file_is_image, load_img_paths, setup_folder_structure, get_name_without_ext
 
 def transform_img_fn(img_path):
     img = image.load_img(img_path, target_size=(299, 299))
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         img = transform_img_fn(img_path)
         np.random.seed(0) # Take note
         explanation = explainer.explain(img, threshold=.95, p_sample=0.5, tau=0.25)
-        new_img_name = img_name.split('.')[0]
+        new_img_name = get_name_without_ext(img_name)
         new_img_path = os.path.join(ANCHOR_FOLDER, f'{new_img_name}.png')
         saveImageFile(explanation.anchor.astype('uint8'), new_img_path) # Convertion from int32 to uint8 needed
         print(f'Generated Images: {count}/{img_paths.__len__()}')

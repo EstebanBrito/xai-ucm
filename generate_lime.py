@@ -9,7 +9,7 @@ from lime import lime_image
 from skimage.segmentation import mark_boundaries
 
 from settings import IMG_FOLDER, LIME_FOLDER
-from utils import convertMatrixToRGBA, saveImageFile, file_is_image, load_img_paths, setup_folder_structure
+from utils import convertMatrixToRGBA, saveImageFile, file_is_image, load_img_paths, setup_folder_structure, get_name_without_ext
 from models import load_inception_v1
 
 def transform_img_fn(img_path):
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                                     hide_rest=True)
         interp_img = mark_boundaries(exp_img/2 + 0.5, mask)
         new_img = convertMatrixToRGBA(interp_img)
-        new_img_name = img_name.split('.')[0]
+        new_img_name = get_name_without_ext(img_name)
         new_img_path = os.path.join(LIME_FOLDER, f'{new_img_name}.png')
         saveImageFile(new_img, new_img_path)
         print(f'Generated Images: {count}/{img_paths.__len__()}')
