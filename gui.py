@@ -76,26 +76,34 @@ class WelcomeWindow(tk.Tk):
 
 
 class ImageViewerWindow(tk.Tk):
+    app = None
+    # Window measurements
     main_img_size, normal_img_size = 200, 150
     space_between = 50
     w = 850 # 4*normal_img_size + 5*space_between
     h = 600
-    # References to imgs are needed for tkinter does not hold references
+    # Image info
+    labels = None
+    image_name = None
+    # References to imgs are needed, for tkinter does not hold references
     main_img = None
     img1 = None
     img2 = None
     img3 = None
     img4 = None
 
-    def __init__(self, app, image_name, image_number, no_of_images):
+    def __init__(self, app, image_name, image_number, no_of_images, labels):
         # Prev. configurations
         super().__init__()
+        self.app = app
+        self.labels = labels
+        self.image_name = image_name
+        # Window configurations
         self.geometry(f'{self.w}x{self.h}')
         self.title(f'Imagen {image_number}/{no_of_images}')
         self.resizable(False, False)
         # Main img and instructions
         self.load_images_widgets(image_name)
-
         main_lbl = tk.Label(self, image=self.main_img)
         main_lbl.place(x=325, y=10, width=self.main_img_size, height=self.main_img_size)
         text = tk.Label(self, text='¿Cuál de las imágenes de abajo explica de mejor manera la imagen de arriba?\nPresiona el botón debajo de la imagen de tu elección')
@@ -136,6 +144,13 @@ class ImageViewerWindow(tk.Tk):
     
     def calc_img_x(self, img_no):
         return self.space_between + (img_no-1)*(self.normal_img_size + self.space_between)
+    
+    def register_label(self, label):
+        self.labels[self.image_name] = label
+
+    def load_next_images(self, label):
+        self.register_label(label)
+        self.app.change_windows(ImageViewerWindow)
 
 
 class InstructionsWindow(tk.Tk):
