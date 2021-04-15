@@ -1,4 +1,4 @@
-tensorflow==2.5.0rc0
+tensorflow==2.4
 tensorflow_hub==0.11.0
 alibi==0.5.5
 lime==0.2.0.1
