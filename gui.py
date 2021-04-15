@@ -4,6 +4,8 @@ import os
 
 from settings import IMG_FOLDER, IG_FOLDER, LIME_FOLDER, XRAI_FOLDER, ANCHOR_FOLDER
 
+LABELS_FILE = os.path.join('.', 'labels.txt')
+
 def get_name_without_ext(filename):
     return '.'.join(filename.split('.')[:-1])
 
@@ -17,7 +19,6 @@ def file_is_image(img_name):
 class LabelerApp():
     count = 0
     img_names = load_img_names()
-    print(img_names)
     labeled_images = {}
 
     def __init__(self):
@@ -32,11 +33,13 @@ class LabelerApp():
                     kwargs = {
                         'image_name': self.img_names[self.count],
                         'image_number': self.count + 1,
-                        'no_of_images': len(self.img_names)
+                        'no_of_images': len(self.img_names),
+                        'labels': self.labeled_images
                     }
                     self.count += 1
                 else:
-                    # self.saveImages()
+                    # Save images and thank the user
+                    self.saveLabelsToFile()
                     window = ThankYouWindow
             else:
                 print('No images detected')
@@ -47,6 +50,13 @@ class LabelerApp():
             self._window.destroy()
         self._window = new_window
         self._window.mainloop()
+    
+    def saveLabelsToFile(self):
+        if os.path.exists(LABELS_FILE): os.remove(LABELS_FILE)
+        f = open(LABELS_FILE, 'wt')
+        for img, label in self.labeled_images.items():
+            f.write(f'{img},{label}\n')
+        f.close()
 
 
 class WelcomeWindow(tk.Tk):
@@ -62,17 +72,17 @@ class WelcomeWindow(tk.Tk):
         # Windows text
         title = tk.Label(self, text='VOTACIÓN DE IMÁGENES. PROYECTO XAI-UCM')
         title.place(x=0, y=30, width=self.w)
-        title.config(font=('Helvetica', 18, 'bold'), justify=tk.CENTER)
+        title.config(font=('Arial', 18, 'bold'), justify=tk.CENTER)
         inst = tk.Label(self, text='Presione "Iniciar" o "Leer Instrucciones"')
         inst.place(x=0, y=70, width=self.w)
-        inst.config(font=('Helvetica', 14), justify=tk.CENTER)
+        inst.config(font=('Arial', 14), justify=tk.CENTER)
         # Buttons
         btn1 = tk.Button(self, text='Iniciar', bd=5, command=lambda: app.switch_window(ImageViewerWindow))
         btn1.place(x=270, y=150)
-        btn1.config(font=('Helvetica', 12))
-        btn2 = tk.Button(self, text=f'Leer instrucciones', bd=5, command=lambda: app.switch_window(InstructionsWindow))
+        btn1.config(font=('Arial', 12))
+        btn2 = tk.Button(self, text=f'Leer instrucciones', bd=5)
         btn2.place(x=230, y=200)
-        btn2.config(font=('Helvetica', 12))
+        btn2.config(font=('Arial', 12))
 
 
 class ImageViewerWindow(tk.Tk):
@@ -108,7 +118,7 @@ class ImageViewerWindow(tk.Tk):
         main_lbl.place(x=325, y=10, width=self.main_img_size, height=self.main_img_size)
         text = tk.Label(self, text='¿Cuál de las imágenes de abajo explica de mejor manera la imagen de arriba?\nPresiona el botón debajo de la imagen de tu elección')
         text.place(x=0, y=210, width=self.w, height=60)
-        text.config(font=('Helvetica', 12, 'bold'), justify=tk.CENTER)
+        text.config(font=('Arial', 12, 'bold'), justify=tk.CENTER)
         # Images
         lbl1 = tk.Label(self, image=self.img1)
         lbl1.place(x=50, y=280, width=self.normal_img_size, height=self.normal_img_size)
@@ -119,18 +129,18 @@ class ImageViewerWindow(tk.Tk):
         lbl3 = tk.Label(self, image=self.img4)
         lbl3.place(x=650, y=280, width=self.normal_img_size, height=self.normal_img_size)
         # Buttons
-        btn1 = tk.Button(self, text='GRAD. INTEGRADOS', bd=5)
+        btn1 = tk.Button(self, text='GRAD. INTEGRADOS', bd=5, command=lambda: self.load_next_image_viewer('IG'))
         btn1.place(x=50, y=460, width=self.normal_img_size)
-        btn1.config(font=('Helvetica', 10), justify=tk.CENTER)
-        btn2 = tk.Button(self, text='LIME', bd=5)
+        btn1.config(font=('Arial', 10), justify=tk.CENTER)
+        btn2 = tk.Button(self, text='LIME', bd=5, command=lambda: self.load_next_image_viewer('LIME'))
         btn2.place(x=250, y=460, width=self.normal_img_size)
-        btn2.config(font=('Helvetica', 10), justify=tk.CENTER)
-        btn3 = tk.Button(self, text='XRAI', bd=5)
+        btn2.config(font=('Arial', 10), justify=tk.CENTER)
+        btn3 = tk.Button(self, text='XRAI', bd=5, command=lambda: self.load_next_image_viewer('XRAI'))
         btn3.place(x=450, y=460, width=self.normal_img_size)
-        btn3.config(font=('Helvetica', 10), justify=tk.CENTER)
-        btn4 = tk.Button(self, text='ANCHOR', bd=5)
+        btn3.config(font=('Arial', 10), justify=tk.CENTER)
+        btn4 = tk.Button(self, text='ANCHOR', bd=5, command=lambda: self.load_next_image_viewer('ANCHOR'))
         btn4.place(x=650, y=460, width=self.normal_img_size)
-        btn4.config(font=('Helvetica', 10), justify=tk.CENTER)
+        btn4.config(font=('Arial', 10), justify=tk.CENTER)
 
     def load_images_widgets(self, img_name):
         size_main = (self.main_img_size, self.main_img_size)
@@ -148,9 +158,9 @@ class ImageViewerWindow(tk.Tk):
     def register_label(self, label):
         self.labels[self.image_name] = label
 
-    def load_next_images(self, label):
+    def load_next_image_viewer(self, label):
         self.register_label(label)
-        self.app.change_windows(ImageViewerWindow)
+        self.app.switch_window(ImageViewerWindow)
 
 
 class InstructionsWindow(tk.Tk):
@@ -161,10 +171,28 @@ class InstructionsWindow(tk.Tk):
 
 
 class ThankYouWindow(tk.Tk):
+    w, h = 400, 400
+
     def __init__(self, app):
         super().__init__()
-        self.geometry('100x100')
+        self.geometry(f'{self.w}x{self.h}')
         self.resizable(False, False)
+        self.title('Votación Terminada')
+        # Widgets
+        texto = '''
+        Muchas gracias por cooperar en la votación.\n
+        En la carpeta "xai-ucm" se ha generado un archivo\n
+        de nombre "labels.txt". Entrégaselo a la persona\n
+        que te pidió colaborar en la votación, o envíalo\n
+        al correo jareciog@ucm.edu.es
+        '''
+        lbl = tk.Label(self, text=texto)
+        lbl.place(x=0, y=10, width=self.w, height=200)
+        lbl.config(font=('Arial', 10), justify=tk.LEFT)
+
+        btn = tk.Button(self, text='SALIR', bd=5, command=lambda: exit(0))
+        btn.place(x=100, y=300, width=150)
+        btn.config(font=('Arial', 12), justify=tk.CENTER)
 
 
 if __name__ == "__main__":
