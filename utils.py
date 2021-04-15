@@ -3,6 +3,7 @@ from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 import numpy as np
 from PIL import Image as im
+
 from settings import *
 from preproc import read_image
 from models import get_pred_class_idx
