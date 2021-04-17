@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 import os
+import sys
 
 from settings import IMG_FOLDER, IG_FOLDER, LIME_FOLDER, XRAI_FOLDER, ANCHOR_FOLDER
 
@@ -155,7 +156,7 @@ class ImageViewerWindow(tk.Tk):
         self.main_img = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(IMG_FOLDER, img_name)).resize(size_main))
         self.img1 = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(IG_FOLDER, img_name_png)).resize(size_normal))
         self.img2 = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(LIME_FOLDER, img_name_png)).resize(size_normal))
-        self.img3 = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(ANCHOR_FOLDER, img_name_png)).resize(size_normal))
+        self.img3 = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(XRAI_FOLDER, img_name_png)).resize(size_normal))
         self.img4 = ImageTk.PhotoImage(master=self, image=Image.open(os.path.join(ANCHOR_FOLDER, img_name_png)).resize(size_normal))
     
     def calc_img_x(self, img_no):
@@ -202,4 +203,5 @@ class ThankYouWindow(tk.Tk):
 
 
 if __name__ == "__main__":
+    sys.setrecursionlimit(2000) # Quick fix for recursion errors
     app = LabelerApp()

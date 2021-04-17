@@ -13,6 +13,8 @@ def setup_folder_structure():
         os.mkdir(IG_FOLDER)
     if not os.path.isdir(LIME_FOLDER):
         os.mkdir(LIME_FOLDER)
+    if not os.path.isdir(XRAI_FOLDER):
+        os.mkdir(XRAI_FOLDER)
     if not os.path.isdir(ANCHOR_FOLDER):
         os.mkdir(ANCHOR_FOLDER)
 
