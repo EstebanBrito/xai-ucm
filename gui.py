@@ -6,6 +6,11 @@ from settings import IMG_FOLDER, IG_FOLDER, LIME_FOLDER, XRAI_FOLDER, ANCHOR_FOL
 
 LABELS_FILE = os.path.join('.', 'labels.txt')
 
+def get_class_from_filename(filename):
+    rough_name = filename.split('__')[1]
+    clean_name = rough_name.replace('_', ' ').upper()
+    return clean_name
+
 def get_name_without_ext(filename):
     return '.'.join(filename.split('.')[:-1])
 
@@ -114,9 +119,10 @@ class ImageViewerWindow(tk.Tk):
         self.resizable(False, False)
         # Main img and instructions
         self.load_images_widgets(image_name)
+        class_name = get_class_from_filename(image_name)
         main_lbl = tk.Label(self, image=self.main_img)
         main_lbl.place(x=325, y=10, width=self.main_img_size, height=self.main_img_size)
-        text = tk.Label(self, text='¿Cuál de las imágenes de abajo explica de mejor manera la imagen de arriba?\nPresiona el botón debajo de la imagen de tu elección')
+        text = tk.Label(self, text=f'¿Cuál de las imágenes de abajo explica de mejor manera la imagen de arriba? (Se trata de un {class_name})\nPresiona el botón debajo de la imagen de tu elección')
         text.place(x=0, y=210, width=self.w, height=60)
         text.config(font=('Arial', 12, 'bold'), justify=tk.CENTER)
         # Images
@@ -129,16 +135,16 @@ class ImageViewerWindow(tk.Tk):
         lbl3 = tk.Label(self, image=self.img4)
         lbl3.place(x=650, y=280, width=self.normal_img_size, height=self.normal_img_size)
         # Buttons
-        btn1 = tk.Button(self, text='GRAD. INTEGRADOS', bd=5, command=lambda: self.load_next_image_viewer('IG'))
+        btn1 = tk.Button(self, text='OPCION 1', bd=5, command=lambda: self.load_next_image_viewer('IG'))
         btn1.place(x=50, y=460, width=self.normal_img_size)
         btn1.config(font=('Arial', 10), justify=tk.CENTER)
-        btn2 = tk.Button(self, text='LIME', bd=5, command=lambda: self.load_next_image_viewer('LIME'))
+        btn2 = tk.Button(self, text='OPCION 2', bd=5, command=lambda: self.load_next_image_viewer('LIME'))
         btn2.place(x=250, y=460, width=self.normal_img_size)
         btn2.config(font=('Arial', 10), justify=tk.CENTER)
-        btn3 = tk.Button(self, text='XRAI', bd=5, command=lambda: self.load_next_image_viewer('XRAI'))
+        btn3 = tk.Button(self, text='OPCION 3', bd=5, command=lambda: self.load_next_image_viewer('XRAI'))
         btn3.place(x=450, y=460, width=self.normal_img_size)
         btn3.config(font=('Arial', 10), justify=tk.CENTER)
-        btn4 = tk.Button(self, text='ANCHOR', bd=5, command=lambda: self.load_next_image_viewer('ANCHOR'))
+        btn4 = tk.Button(self, text='OPCION 4', bd=5, command=lambda: self.load_next_image_viewer('ANCHOR'))
         btn4.place(x=650, y=460, width=self.normal_img_size)
         btn4.config(font=('Arial', 10), justify=tk.CENTER)
 
