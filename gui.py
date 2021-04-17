@@ -191,7 +191,7 @@ class ThankYouWindow(tk.Tk):
         En la carpeta "xai-ucm" se ha generado un archivo\n
         de nombre "labels.txt". Entrégaselo a la persona\n
         que te pidió colaborar en la votación, o envíalo\n
-        al correo jareciog@ucm.edu.es
+        al correo jareciog@fdi.ucm.es
         '''
         lbl = tk.Label(self, text=texto)
         lbl.place(x=0, y=10, width=self.w, height=200)
